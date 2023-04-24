@@ -5,6 +5,10 @@ session_start();
 
 // 2. Why do you think the session variable assignments are wrapped inside an if-else and try-catch statements?
 
+/* Session variable assignments are wrapped inside if-else and try-catch lines to 
+   ensure that the session variable is assigned a value before it is used. 
+   If the session variable is not assigned a value before it is used, it will throw an exception. */
+
 try {
     if (isset($_POST['complete_name']) && isset($_POST['email']) && isset($_POST['birthdate'])) {
         $_SESSION['user_completename'] = $_POST['complete_name'];

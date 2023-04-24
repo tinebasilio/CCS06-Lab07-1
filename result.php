@@ -32,7 +32,7 @@ try {
 <body>
         <h1>Thank You!</h1>
         <p style="color: gray">You've completed the exam.</p>
-        <p>Congratulations <b><?php echo $_SESSION['user_completename']; ?></b> (<b><?php echo $_SESSION['user_email'];?></b>)!<p>
+        <p>Congratulations <b><?php echo $_SESSION['user_completename']; ?></b> (<b><?php echo $_SESSION['user_email'];?></b>)<p>
         <p>Score: <b><span style='color:blue'><?php echo $score; ?></span></b> out of <b><?php echo $questionSize; ?></b> items</p>
         
         <p>Your Answers:</p>

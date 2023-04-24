@@ -3,6 +3,9 @@ require "vendor/autoload.php";
 
 // 1. What does this function session_start() do to the application?
 
+/* The session_start() function will start a new session or resume an existing one. 
+   It helps to store data across multiple pages of the application so that we can use it later on. */
+
 session_start();
 session_destroy();
 ?>
