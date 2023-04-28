@@ -1,6 +1,7 @@
 <?php
 
 require "vendor/autoload.php";
+
 session_start();
 
 use App\QuestionManager;
@@ -28,7 +29,7 @@ try {
         $_SESSION['answers'] = [];
         $number = 1;
     }
-    
+
     if (isset($_POST['submit'])) {
         for ($number = 1; $number <= $manager->getQuestionSize(); $number++) {
             if (isset($_POST['answer_'.$number])) {
@@ -41,11 +42,9 @@ try {
         if ($answeredQuestions == $manager->getQuestionSize()) {
             header("Location: result.php");
             exit;
-        }
+        } 
     } 
     
-    //$question = $manager->retrieveQuestion($number);
-
 } catch (Exception $e) {
     echo '<h1>An error occurred:</h1>';
     echo '<p>' . $e->getMessage() . '</p>';
@@ -61,128 +60,90 @@ try {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quiz</title>
     <style>
-
         body {
             font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
         }
-
-        #container {
+        .container {
             max-width: 800px;
             margin: 0 auto;
-            background-color: #fff;
-            border-radius: 10px;
-			box-shadow: 0px 0px 10px #aaa;
-            padding: 30px;
-            margin-top: 100px;
-            margin-bottom: 100px;
+            padding: 20px;
         }
-
-        h1 {
-            font-size: 32px;
-            font-weight: bold;
-            color: #333;
+        h1, h2, h3, h4 {
             margin-top: 0;
         }
-
-        h2 {
-            font-size: 24px;
-            font-weight: bold;
-            color: #333;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
-        h3 {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-
+        
         p {
-            font-size: 16px;
-            color: #333;
             line-height: 1.5;
-            margin-top: 0;
-            margin-bottom: 10px;
+            color: #555;
         }
-
         form {
+            background-color: white;
             margin-top: 20px;
-        }
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #aaa;
 
-        label {
-            display: block;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
         }
-
-        input[type="radio"] {
+        input[type="radio"], input[type="checkbox"] {
             margin-right: 10px;
         }
-
-        input[type="submit"] {
+        label {
             font-size: 16px;
-            color: #fff;
+            color: #333;
+        }
+        input[type="submit"] {
             background-color: #333;
+            color: #fff;
             border: none;
-            border-radius: 5px;
             padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
-
         input[type="submit"]:hover {
-            background-color: #666;
+            background-color: #555;
         }
-
     </style>
-    
 </head>
 <body>
 
-<div id="container">
+<div class="container">
     <h1>Analogy Questions</h1>
-        <h3>Instructions</h3>
-        <p style="color: gray">
-            There is a certain relationship between two given words on one side of : : and one word is given on another side of : : 
-            while another word is to be found from the given alternatives, having the same relation with this word as the words of 
-            the given pair bear. Choose the correct alternative.
-        </p>
+    <h3>Instructions</h3>
+    <p>
+        There is a certain relationship between two given words on one side of : : and one word is given on another side of : : 
+        while another word is to be found from the given alternatives, having the same relation with this word as the words of 
+        the given pair bear. Choose the correct alternative.
+    </p>
 
-        <form method="POST" action="quiz.php">
+    <form method="POST" action="quiz.php">
+        <?php foreach ($questions as $question): ?>
+            <div style="margin-bottom: 20px;">
+                <h2><?php echo $question->getNumber(); ?>. <?php echo $question->getQuestion(); ?></h2>
 
-            <?php foreach ($questions as $question): ?>
-                <h1>Question #<?php echo $question->getNumber(); ?></h1>
-                <h2 style="color: blue"><?php echo $question->getQuestion(); ?></h2>
-                <label>Choices</label>
-                <input type="hidden" name="number_<?php echo $question->getNumber(); ?>" value="<?php echo $question->getNumber();?>" />
-                
                 <?php foreach ($question->getChoices() as $choice): ?>
-                    <label>
-                        <input 
-                               type="radio" 
-                               name="answer_<?php echo $question->getNumber(); ?>" 
-                               value="<?php echo $choice->letter; ?>" id="<?php echo $choice->letter; ?>"/>
+                    <div>
+                        <input type="radio" name="answer_<?php echo $question->getNumber(); ?>" value="<?php echo $choice->letter; ?>" id="<?php echo $choice->letter; ?>"/>
                         <label for="<?php echo $choice->letter; ?>"><?php echo $choice->letter . ') ' . $choice->label; ?></label>
-                    </label>
+                    </div>
                 <?php endforeach; ?>
-            <?php endforeach; ?>
-        <input type="submit" name="submit" value="Next">
-        </form>
+            </div>
+
+        <?php endforeach; ?>
+
+        <input type="submit" name="submit" value="Submit">
+    </form>
 </div>
 </body>
 </html>
 
+
 <!-- DEBUG MODE -->
 <pre>
 <?php
-var_dump($_SESSION);
+//var_dump($_SESSION);
 ?>
 </pre>
